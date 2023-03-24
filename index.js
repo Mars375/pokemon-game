@@ -12,5 +12,21 @@ const image = new Image()
 image.src = './images/Ribelle_Town.png'
 
 image.onload = () => {
-  c.drawImage(image, -300, -500)
+  c.drawImage(image, -65, -650)
+}
+
+const playerImage = new Image()
+playerImage.src = './images/playerDown.png'
+
+playerImage.onload = () => {
+  c.drawImage(playerImage,
+    0, //?
+    0, //?
+    playerImage.width / 4, //?
+    playerImage.height, //? Crop the image
+    canvas.width / 2 - (playerImage.width / 4) / 2, //* 
+    canvas.height / 2 - playerImage.height / 2, //* 
+    playerImage.width / 4, //*
+    playerImage.height, //* actual position
+  )
 }
