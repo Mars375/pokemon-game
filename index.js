@@ -29,7 +29,7 @@ class Boundary {
   }
 
   draw() {
-    c.fillStyle = 'rgba(255, 0, 0, 0.0)'
+    c.fillStyle = 'rgba(255, 0, 0, 0.65)'
     c.fillRect(this.position.x, this.position.y, this.width, this.height)
   }
 }
@@ -154,7 +154,7 @@ function playerCollision({
   return (player.position.x + player.width >= obstacle.position.x
     && player.position.x <= obstacle.position.x + obstacle.width
     && player.position.y + player.height >= obstacle.position.y
-    && player.position.y <= obstacle.position.y + obstacle.height)
+    && player.position.y <= obstacle.position.y + obstacle.height / 15)
 }
 
 //Map design
@@ -174,12 +174,11 @@ function animate() {
         player,
         obstacle: {
           ...boundary, position: {
-            x: boundary.position.x + 3,
+            x: boundary.position.x,
             y: boundary.position.y + 3
           }
         }
       })) {
-        console.log('collision')
         moving = false
         break
       }
@@ -202,7 +201,6 @@ function animate() {
           }
         }
       })) {
-        console.log('collision')
         moving = false
         break
       }
@@ -225,7 +223,6 @@ function animate() {
           }
         }
       })) {
-        console.log('collision')
         moving = false
         break
       }
@@ -248,7 +245,6 @@ function animate() {
           }
         }
       })) {
-        console.log('collision')
         moving = false
         break
       }
