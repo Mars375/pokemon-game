@@ -13,27 +13,6 @@ for (let i = 0; i < collisions.length; i += 70) {
   collisionsMap.push(collisions.slice(i, 70 + i))
 }
 
-// Class Boundary
-class Boundary {
-  static width = 48
-  static height = 48
-
-  constructor({
-    position,
-    width,
-    height
-  }) {
-    this.position = position
-    this.width = 48
-    this.height = 48
-  }
-
-  draw() {
-    c.fillStyle = 'rgba(255, 0, 0, 0.65)'
-    c.fillRect(this.position.x, this.position.y, this.width, this.height)
-  }
-}
-
 // Create boundaries
 const boundaries = []
 
@@ -60,43 +39,11 @@ collisionsMap.forEach((row, i) => {
 const image = new Image()
 image.src = './images/Ribelle_Town.png'
 
+const foregroundImage = new Image()
+foregroundImage.src = './images/foregroundObjects.png'
+
 const playerImage = new Image()
 playerImage.src = './images/playerDown.png'
-
-// Class Sprite
-class Sprite {
-  constructor({
-    position,
-    velocity,
-    image,
-    frames = {
-      max: 1,
-    }
-  }) {
-    this.position = position
-    this.image = image
-    this.frames = frames
-
-    this.image.onload = () => {
-      this.width = this.image.width / this.frames.max
-      this.height = this.image.height
-    }
-  }
-
-  draw() {
-    c.drawImage(
-      this.image,
-      0,
-      0,
-      this.image.width / this.frames.max,
-      this.image.height,
-      this.position.x,
-      this.position.y,
-      this.image.width / this.frames.max,
-      this.image.height,
-    )
-  }
-}
 
 // Create player
 const player = new Sprite({
@@ -116,6 +63,14 @@ const background = new Sprite({
     y: offset.y
   },
   image: image
+})
+
+const foreground = new Sprite({
+  position: {
+    x: offset.x,
+    y: offset.y
+  },
+  image: foregroundImage
 })
 
 const keys = {
@@ -145,14 +100,14 @@ const keys = {
   }
 }
 
-const movables = [background, ...boundaries]
+const movables = [background, ...boundaries, foreground]
 
 function playerCollision({
   player,
   obstacle
 }) {
   return (player.position.x + player.width >= obstacle.position.x
-    && player.position.x <= obstacle.position.x + obstacle.width
+    && player.position.x <= obstacle.position.x + obstacle.width / 1.2
     && player.position.y + player.height >= obstacle.position.y
     && player.position.y <= obstacle.position.y + obstacle.height / 15)
 }
@@ -165,6 +120,7 @@ function animate() {
     boundary.draw()
   })
   player.draw()
+  foreground.draw()
 
   let moving = true
   if (keys.z.pressed || keys.arrowUp.pressed) {
